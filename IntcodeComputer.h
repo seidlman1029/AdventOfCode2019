@@ -1,30 +1,151 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <thread>
 
 namespace AOC::IntcodeComputer {
 
-int Run(std::vector<int> memory, int input1, int input2)
-{
-	memory[1] = input1;
-	memory[2] = input2;
+constexpr int position_mode = 0;
+constexpr int immediate_mode = 1;
 
+inline int GetMinOpCode(int full_op_code)
+{
+	return full_op_code % 100;
+}
+
+inline int GetParamValue(const std::vector<int>& memory,
+                         int full_op_code,
+                         int param_number,
+                         int raw_param_value)
+{
+	switch (GetDigitAtPos(full_op_code, 2 + param_number)) {
+	case position_mode:
+		return memory[raw_param_value];
+	case immediate_mode:
+		return raw_param_value;
+	default:
+		throw std::exception("aaa");
+	}
+}
+
+inline void Op1(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+	int param0 = GetParamValue(memory, full_op_code, 0, memory[offset++]);
+	int param1 = GetParamValue(memory, full_op_code, 1, memory[offset++]);
+	int param2 = memory[offset++];
+
+	memory[param2] = param0 + param1;
+}
+
+inline void Op2(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+	int param0 = GetParamValue(memory, full_op_code, 0, memory[offset++]);
+	int param1 = GetParamValue(memory, full_op_code, 1, memory[offset++]);
+	int param2 = memory[offset++];
+
+	memory[param2] = param0 * param1;
+}
+
+inline void Op3(std::vector<int>& memory,
+                int& offset,
+                int input)
+{
+	int full_op_code = memory[offset++];
+	int param0 = memory[offset++];
+
+	memory[param0] = input;
+}
+
+inline void Op4(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+
+	std::cout << "Op 4 output: "
+	          << GetParamValue(memory, full_op_code, 0, memory[offset++])
+	          << std::endl;
+}
+
+inline void Op5(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+	int param0 = GetParamValue(memory, full_op_code, 0, memory[offset++]);
+	int param1 = GetParamValue(memory, full_op_code, 1, memory[offset++]);
+
+	if (param0 != 0)
+		offset = param1;
+}
+
+inline void Op6(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+	int param0 = GetParamValue(memory, full_op_code, 0, memory[offset++]);
+	int param1 = GetParamValue(memory, full_op_code, 1, memory[offset++]);
+
+	if (param0 == 0)
+		offset = param1;
+}
+
+inline void Op7(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+	int param0 = GetParamValue(memory, full_op_code, 0, memory[offset++]);
+	int param1 = GetParamValue(memory, full_op_code, 1, memory[offset++]);
+	int param2 = memory[offset++];
+
+	memory[param2] = param0 < param1 ? 1 : 0;
+}
+
+inline void Op8(std::vector<int>& memory,
+                int& offset)
+{
+	int full_op_code = memory[offset++];
+	int param0 = GetParamValue(memory, full_op_code, 0, memory[offset++]);
+	int param1 = GetParamValue(memory, full_op_code, 1, memory[offset++]);
+	int param2 = memory[offset++];
+
+	memory[param2] = param0 == param1 ? 1 : 0;
+}
+
+inline int Run(std::vector<int> memory, int input)
+{
 	int offset = 0;
 	while (memory[offset] != 99) {
-		int opcode = memory[offset];
-		int arg0_offset = memory[offset + 1];
-		int arg1_offset = memory[offset + 2];
-		int write_offset = memory[offset + 3];
-
-		if (opcode == 1)
-			memory[write_offset] = memory[arg0_offset] +
-			                       memory[arg1_offset];
-
-		else if (opcode == 2)
-			memory[write_offset] = memory[arg0_offset] *
-			                       memory[arg1_offset];
-
-		offset += 4;
+		switch (GetMinOpCode(memory[offset])) {
+		case 1:
+			Op1(memory, offset);
+			break;
+		case 2:
+			Op2(memory, offset);
+			break;
+		case 3:
+			Op3(memory, offset, input);
+			break;
+		case 4:
+			Op4(memory, offset);
+			break;
+		case 5:
+			Op5(memory, offset);
+			break;
+		case 6:
+			Op6(memory, offset);
+			break;
+		case 7:
+			Op7(memory, offset);
+			break;
+		case 8:
+			Op8(memory, offset);
+			break;
+		default:
+			throw std::exception("Oh god the cpu is on fire");
+		}
 	}
 
 	return memory[0];

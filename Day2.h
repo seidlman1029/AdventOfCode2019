@@ -4,24 +4,29 @@
 #include "Util.h"
 #include "IntcodeComputer.h"
 
-
 namespace AOC {
 
 void Part1()
 {
-	const auto memory = ReadCommaSepInts("Inputs/day2.txt");
-	std::cout << IntcodeComputer::Run(memory, 12, 2) << std::endl;
+	auto memory = ReadCommaSepInts("Inputs/day2.txt");
+	memory[1] = 12;
+	memory[2] = 2;
+	std::cout << IntcodeComputer::Run(memory, 0) << std::endl;
 }
 
 void Part2()
 {
-	const auto memory = ReadCommaSepInts("Inputs/day2.txt");
-	for (int i = 0; i < 100; i++)
-		for (int j = 0; j < 100; j++)
-			if (IntcodeComputer::Run(memory, i, j) == 19690720) {
+	auto memory = ReadCommaSepInts("Inputs/day2.txt");
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			memory[1] = i;
+			memory[2] = j;
+			if (IntcodeComputer::Run(memory, 0) == 19690720) {
 				std::cout << 100 * i + j << std::endl;
 				return;
 			}
+		}
+	}
 }
 
 }

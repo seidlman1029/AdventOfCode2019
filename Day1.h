@@ -2,7 +2,6 @@
 #include <iostream>
 #include "Util.h"
 
-
 namespace AOC {
 
 void Part1()

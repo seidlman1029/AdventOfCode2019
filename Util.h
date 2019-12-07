@@ -8,7 +8,28 @@
 
 namespace AOC {
 
-std::vector<int> ReadLines(const char* file_name)
+// pos == 0  corresponds to least significant digit of number
+inline int GetDigitAtPos(int number, int pos)
+{
+	const auto modval = static_cast<int>(std::pow(10, pos + 1));
+	const auto divval = static_cast<int>(std::pow(10, pos));
+
+	return (number % modval) / divval;
+}
+
+std::vector<std::string> ReadLinesStrings(const char* file_name)
+{
+	std::ifstream input{file_name};
+	if (!input.is_open())
+		throw std::exception("aaaaaaaaaaaaaaa");
+
+	std::vector<std::string> lines;
+	for (std::string line; std::getline(input, line); )
+		lines.emplace_back(line);
+	return lines;
+}
+
+std::vector<int> ReadLinesInts(const char* file_name)
 {
 	std::ifstream input{file_name};
 	if (!input.is_open())
