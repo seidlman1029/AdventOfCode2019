@@ -3,6 +3,6 @@
 
 int main()
 {
-	AOC::Part1();
-    int i; std::cin >> i;
+	AOC::Part2();
+	int i; std::cin >> i;
 }
