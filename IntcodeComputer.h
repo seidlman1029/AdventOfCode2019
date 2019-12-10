@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <queue>
 #include <iostream>
 #include <thread>
 
@@ -52,22 +53,22 @@ inline void Op2(std::vector<int>& memory,
 
 inline void Op3(std::vector<int>& memory,
                 int& offset,
-                int input)
+                std::queue<int>& inputs)
 {
 	int full_op_code = memory[offset++];
 	int param0 = memory[offset++];
 
-	memory[param0] = input;
+	memory[param0] = inputs.front();
+	inputs.pop();
 }
 
 inline void Op4(std::vector<int>& memory,
-                int& offset)
+                int& offset,
+                std::queue<int>& outputs)
 {
 	int full_op_code = memory[offset++];
 
-	std::cout << "Op 4 output: "
-	          << GetParamValue(memory, full_op_code, 0, memory[offset++])
-	          << std::endl;
+	outputs.emplace(GetParamValue(memory, full_op_code, 0, memory[offset++]));
 }
 
 inline void Op5(std::vector<int>& memory,
@@ -114,7 +115,7 @@ inline void Op8(std::vector<int>& memory,
 	memory[param2] = param0 == param1 ? 1 : 0;
 }
 
-inline int Run(std::vector<int> memory, int input)
+inline int Run(std::vector<int> memory, std::queue<int>& inputs, std::queue<int>& outputs)
 {
 	int offset = 0;
 	while (memory[offset] != 99) {
@@ -126,10 +127,10 @@ inline int Run(std::vector<int> memory, int input)
 			Op2(memory, offset);
 			break;
 		case 3:
-			Op3(memory, offset, input);
+			Op3(memory, offset, inputs);
 			break;
 		case 4:
-			Op4(memory, offset);
+			Op4(memory, offset, outputs);
 			break;
 		case 5:
 			Op5(memory, offset);
