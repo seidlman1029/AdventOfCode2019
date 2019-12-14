@@ -12,23 +12,23 @@ namespace AOC {
 void Part1()
 {
 	auto program = ReadCommaSepInts("Inputs/day7.txt");
-	int max = 0;
+	int64_t max = 0;
 
 	// fuck it im lazy
-	for (int i = 0; i < 5; i++) {
-	for (int j = 0; j < 5; j++) {
-	for (int k = 0; k < 5; k++) {
-	for (int l = 0; l < 5; l++) {
-	for (int m = 0; m < 5; m++) {
-		std::unordered_set<int> phases{i, j, k, l, m};
+	for (int64_t i = 0; i < 5; i++) {
+	for (int64_t j = 0; j < 5; j++) {
+	for (int64_t k = 0; k < 5; k++) {
+	for (int64_t l = 0; l < 5; l++) {
+	for (int64_t m = 0; m < 5; m++) {
+		std::unordered_set<int64_t> phases{i, j, k, l, m};
 		if (phases.size() != 5)
 			continue;
 
-		auto queue40 = std::make_shared<std::queue<int>>();
-		auto queue01 = std::make_shared<std::queue<int>>();
-		auto queue12 = std::make_shared<std::queue<int>>();
-		auto queue23 = std::make_shared<std::queue<int>>();
-		auto queue34 = std::make_shared<std::queue<int>>();
+		auto queue40 = std::make_shared<std::queue<int64_t>>();
+		auto queue01 = std::make_shared<std::queue<int64_t>>();
+		auto queue12 = std::make_shared<std::queue<int64_t>>();
+		auto queue23 = std::make_shared<std::queue<int64_t>>();
+		auto queue34 = std::make_shared<std::queue<int64_t>>();
 
 		queue40->emplace(i);
 		queue01->emplace(j);
@@ -56,7 +56,7 @@ void Part1()
 			       cp4.Run();
 		}
 
-		int out = queue40->front();
+		int64_t out = queue40->front();
 		max = out > max ? out : max;
 	}
 	}
@@ -71,23 +71,23 @@ void Part1()
 void Part2()
 {
 	auto program = ReadCommaSepInts("Inputs/day7.txt");
-	int max = 0;
+	int64_t max = 0;
 
 	// fuck it im lazy
-	for (int i = 5; i < 10; i++) {
-	for (int j = 5; j < 10; j++) {
-	for (int k = 5; k < 10; k++) {
-	for (int l = 5; l < 10; l++) {
-	for (int m = 5; m < 10; m++) {
-		std::unordered_set<int> phases{i, j, k, l, m};
+	for (int64_t i = 5; i < 10; i++) {
+	for (int64_t j = 5; j < 10; j++) {
+	for (int64_t k = 5; k < 10; k++) {
+	for (int64_t l = 5; l < 10; l++) {
+	for (int64_t m = 5; m < 10; m++) {
+		std::unordered_set<int64_t> phases{i, j, k, l, m};
 		if (phases.size() != 5)
 			continue;
 
-		auto queue40 = std::make_shared<std::queue<int>>();
-		auto queue01 = std::make_shared<std::queue<int>>();
-		auto queue12 = std::make_shared<std::queue<int>>();
-		auto queue23 = std::make_shared<std::queue<int>>();
-		auto queue34 = std::make_shared<std::queue<int>>();
+		auto queue40 = std::make_shared<std::queue<int64_t>>();
+		auto queue01 = std::make_shared<std::queue<int64_t>>();
+		auto queue12 = std::make_shared<std::queue<int64_t>>();
+		auto queue23 = std::make_shared<std::queue<int64_t>>();
+		auto queue34 = std::make_shared<std::queue<int64_t>>();
 
 		queue40->emplace(i);
 		queue01->emplace(j);
@@ -115,7 +115,7 @@ void Part2()
 			       cp4.Run();
 		}
 
-		int out = queue40->front();
+		int64_t out = queue40->front();
 		max = out > max ? out : max;
 	}
 	}

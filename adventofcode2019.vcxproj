@@ -160,6 +160,7 @@
     <ClInclude Include="Day2.h" />
     <ClInclude Include="Day6.h" />
     <ClInclude Include="Day7.h" />
+    <ClInclude Include="Day9.h" />
     <ClInclude Include="IntcodeComputer.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
