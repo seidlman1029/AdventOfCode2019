@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Day11.h"
+#include "Day13.h"
 
 int main()
 {
-	AOC::Part2();
+	AOC::Part1();
 	int i; std::cin >> i;
 }
