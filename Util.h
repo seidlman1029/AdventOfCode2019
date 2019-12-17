@@ -52,7 +52,7 @@ std::vector<int64_t> ReadCommaSepInts(const char* file_name)
 
 		char* token = std::strtok(line.data(), ",");
 		while (token != nullptr) {
-			ints.emplace_back(std::stoi(token));
+			ints.emplace_back(std::stoll(token));
 			token = std::strtok(nullptr, ",");
 		}
 	}
