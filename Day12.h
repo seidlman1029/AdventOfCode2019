@@ -75,15 +75,15 @@ void ApplyGravity(Moon& moon, const std::vector<Moon>& moons)
 		if (moon.name == other.name)
 			continue;
 
-		if (moon.x_pos < other.x_pos)
-			moon.x_vel++;
-		else if (moon.x_pos > other.x_pos)
-			moon.x_vel--;
+		//if (moon.x_pos < other.x_pos)
+		//	moon.x_vel++;
+		//else if (moon.x_pos > other.x_pos)
+		//	moon.x_vel--;
 
-		if (moon.y_pos < other.y_pos)
-			moon.y_vel++;
-		else if (moon.y_pos > other.y_pos)
-			moon.y_vel--;
+		//if (moon.y_pos < other.y_pos)
+		//	moon.y_vel++;
+		//else if (moon.y_pos > other.y_pos)
+		//	moon.y_vel--;
 
 		if (moon.z_pos < other.z_pos)
 			moon.z_vel++;
@@ -94,8 +94,8 @@ void ApplyGravity(Moon& moon, const std::vector<Moon>& moons)
 
 void ApplyVelocity(Moon& moon)
 {
-	moon.x_pos += moon.x_vel;
-	moon.y_pos += moon.y_vel;
+	//moon.x_pos += moon.x_vel;
+	//moon.y_pos += moon.y_vel;
 	moon.z_pos += moon.z_vel;
 }
 
@@ -142,146 +142,35 @@ void Part1()
 
 }
 
-struct MoonMinMaxTracker {
-	std::string name;
-	uint64_t reset_iterations;
-	uint64_t iteration_count;
-
-
-	int64_t min_x_pos;
-	int64_t min_y_pos;
-	int64_t min_z_pos;
-	int64_t min_x_vel;
-	int64_t min_y_vel;
-	int64_t min_z_vel;
-
-	int64_t max_x_pos;
-	int64_t max_y_pos;
-	int64_t max_z_pos;
-	int64_t max_x_vel;
-	int64_t max_y_vel;
-	int64_t max_z_vel;
-
-	void Reset()
-	{
-		iteration_count = 0;
-
-		min_x_pos = 999999999999;
-		min_y_pos = 999999999999;
-		min_z_pos = 999999999999;
-		min_x_vel = 999999999999;
-		min_y_vel = 999999999999;
-		min_z_vel = 999999999999;
-
-		max_x_pos = -9999999999999;
-		max_y_pos = -9999999999999;
-		max_z_pos = -9999999999999;
-		max_x_vel = -9999999999999;
-		max_y_vel = -9999999999999;
-		max_z_vel = -9999999999999;
-	}
-
-	void PrintTracking()
-	{
-		std::cout << "Values for the last " << iteration_count << " iterations of moon " << name << ": " << std::endl;
-
-		std::cout << "min_x_pos: " << min_x_pos << std::endl;
-		std::cout << "min_y_pos: " << min_y_pos << std::endl;
-		std::cout << "min_z_pos: " << min_z_pos << std::endl;
-		std::cout << "min_x_vel: " << min_x_vel << std::endl;
-		std::cout << "min_y_vel: " << min_y_vel << std::endl;
-		std::cout << "min_z_vel: " << min_z_vel << std::endl;
-
-		std::cout << "max_x_pos: " << max_x_pos << std::endl;
-		std::cout << "max_y_pos: " << max_y_pos << std::endl;
-		std::cout << "max_z_pos: " << max_z_pos << std::endl;
-		std::cout << "max_x_vel: " << max_x_vel << std::endl;
-		std::cout << "max_y_vel: " << max_y_vel << std::endl;
-		std::cout << "max_z_vel: " << max_z_vel << std::endl;
-	}
-
-	MoonMinMaxTracker(Moon m, uint64_t ri)
-	  : name{m.name},
-	    reset_iterations{ri}
-	{
-		Reset();
-	}
-
-	void Track(const Moon& moon)
-	{
-		if (moon.x_pos < min_x_pos)
-			min_x_pos = moon.x_pos;
-		if (moon.y_pos < min_y_pos)
-			min_y_pos = moon.y_pos;
-		if (moon.z_pos < min_z_pos)
-			min_z_pos = moon.z_pos;
-		if (moon.x_vel < min_x_vel)
-			min_x_vel = moon.x_vel;
-		if (moon.y_vel < min_y_vel)
-			min_y_vel = moon.y_vel;
-		if (moon.z_vel < min_z_vel)
-			min_z_vel = moon.z_vel;
-
-		if (moon.x_pos > max_x_pos)
-			max_x_pos = moon.x_pos;
-		if (moon.y_pos > max_y_pos)
-			max_y_pos = moon.y_pos;
-		if (moon.z_pos > max_z_pos)
-			max_z_pos = moon.z_pos;
-		if (moon.x_vel > max_x_vel)
-			max_x_vel = moon.x_vel;
-		if (moon.y_vel > max_y_vel)
-			max_y_vel = moon.y_vel;
-		if (moon.z_vel > max_z_vel)
-			max_z_vel = moon.z_vel;
-
-		if (++iteration_count > reset_iterations) {
-			PrintTracking();
-			Reset();
-		}
-	}
-
-};
-
 void Part2()
 {
-	constexpr uint64_t iterations = 100000000;
 	std::vector<Moon> moons;
-
 	moons.emplace_back("Io", 1, -4, 3);
 	moons.emplace_back("Europa", -14, 9, -4);
 	moons.emplace_back("Ganymede", -4, -6, 7);
 	moons.emplace_back("Callisto", 6, -9, -11);
 
-	//MoonMinMaxTracker mmmt_io{moons[0], 10000000};
-	//MoonMinMaxTracker mmmt_eu{moons[1], 10000000};
-	//MoonMinMaxTracker mmmt_gm{moons[2], 10000000};
-	//MoonMinMaxTracker mmmt_cl{moons[3], 10000000};
+	auto init_state = moons;
 
-	//uint64_t last_iter_seen = 0;
-	//uint64_t last_iter_seen2 = 0;
-	std::unordered_set<Moon, MoonHash> zpos_maxes;
-
-	for (uint64_t i = 0; i < iterations; i++) {
+	for (uint64_t i = 0; i < 10000000000; i++) {
 		for (auto& moon : moons)
 			ApplyGravity(moon, moons);
 
 		for (auto& moon : moons)
 			ApplyVelocity(moon);
 
-		if (moons[0].z_pos == 1509) {
-			if (zpos_maxes.count(moons[0]) == 1)
-				std::cout << "Zomg a repeat of the following moon on iteration " << i << std::endl << moons[0].ToStr() << std::endl;
-			else
-				zpos_maxes.insert(moons[0]);
+		bool repeat = true;
+		for (int i = 0; i < 4; i++) {
+			if (moons[i].z_pos != init_state[i].z_pos || moons[i].z_vel != 0) {
+				repeat = false;
+				break;
+			}
 		}
-		//mmmt_io.Track(moons[0]);
-		//mmmt_eu.Track(moons[1]);
-		//mmmt_gm.Track(moons[2]);
-		//mmmt_cl.Track(moons[3]);
+		if (repeat)
+			std::cout << "all z's repeat on inter: " << i << std::endl;
+
 	}
 
-	std::cout << "Donezo" << std::endl;
 }
 
 
